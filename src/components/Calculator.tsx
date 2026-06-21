@@ -148,8 +148,8 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
 
                   {/* Transport Buttons */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Default Mode of Transport</label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 block">Default Mode of Transport</span>
+                    <div className="grid grid-cols-3 gap-3" role="group" aria-label="Modes of transportation">
                       {[
                         { type: 'car', label: 'Gas Car', icon: Car, desc: 'Single occupancy' },
                         { type: 'ev', label: 'EV', icon: Sparkles, desc: 'Electric vehicle' },
@@ -166,13 +166,14 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
                             id={`transport-btn-${item.type}`}
                             type="button"
                             onClick={() => setValue('transportType', item.type as TransportType)}
-                            className={`flex flex-col items-center justify-center rounded-xl border p-3.5 text-center transition-all cursor-pointer ${
+                            aria-pressed={isSelected}
+                            className={`flex flex-col items-center justify-center rounded-xl border p-3.5 text-center transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50 ${
                               isSelected
                                 ? 'border-emerald-500 bg-emerald-50/50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400'
                                 : 'border-slate-200 bg-transparent text-slate-500 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700'
                             }`}
                           >
-                            <IconComp className="h-5 w-5 mb-1.5" />
+                            <IconComp className="h-5 w-5 mb-1.5" aria-hidden="true" />
                             <span className="text-xs font-bold leading-tight">{item.label}</span>
                             <span className="text-[9px] text-slate-400 mt-1 hidden sm:inline">{item.desc}</span>
                           </button>
@@ -196,8 +197,11 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
                       type="range"
                       min="0"
                       max="150"
-                      aria-label="Daily travel distance"
-                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer"
+                      aria-label="Daily travel distance in kilometers"
+                      aria-valuemin={0}
+                      aria-valuemax={150}
+                      aria-valuenow={watchValues.travelDistance}
+                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       {...register('travelDistance', { valueAsNumber: true })}
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500">
@@ -247,8 +251,11 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
                       min="0"
                       max="1200"
                       step="10"
-                      aria-label="Monthly electricity consumption"
-                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer"
+                      aria-label="Monthly electricity consumption in Kilowatt-Hours"
+                      aria-valuemin={0}
+                      aria-valuemax={1200}
+                      aria-valuenow={watchValues.electricityConsume}
+                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       {...register('electricityConsume', { valueAsNumber: true })}
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500">
@@ -278,8 +285,11 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
                       min="10"
                       max="450"
                       step="5"
-                      aria-label="Daily water consumption"
-                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer"
+                      aria-label="Daily water consumption in liters"
+                      aria-valuemin={10}
+                      aria-valuemax={450}
+                      aria-valuenow={watchValues.waterConsume}
+                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       {...register('waterConsume', { valueAsNumber: true })}
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500">
@@ -324,8 +334,8 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
 
                   {/* Food Preference Selection */}
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">Dietary Preference</label>
-                    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3">
+                    <span className="text-sm font-semibold text-slate-700 dark:text-slate-300 block">Dietary Preference</span>
+                    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3" role="group" aria-label="Dietary choices">
                       {[
                         { type: 'vegetarian', label: 'Vegetarian / Vegan', desc: 'No livestock meat consumption' },
                         { type: 'mixed', label: 'Balanced / Mixed', desc: 'Poultry, seafood & dairy bundles' },
@@ -338,7 +348,8 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
                             id={`food-btn-${item.type}`}
                             type="button"
                             onClick={() => setValue('foodPref', item.type as FoodPreference)}
-                            className={`flex flex-col items-start rounded-xl border p-4.5 text-left transition-all cursor-pointer ${
+                            aria-pressed={isSelected}
+                            className={`flex flex-col items-start rounded-xl border p-4.5 text-left transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500/50 ${
                               isSelected
                                 ? 'border-emerald-500 bg-emerald-50/50 text-emerald-600 dark:bg-emerald-950/20 dark:text-emerald-400'
                                 : 'border-slate-200 bg-transparent text-slate-500 hover:border-slate-300 hover:bg-slate-50 dark:border-slate-800 dark:text-slate-400 dark:hover:border-slate-700'
@@ -367,8 +378,11 @@ export default function Calculator({ onRecordAdded, lastRecord }: CalculatorProp
                       type="range"
                       min="0"
                       max="15"
-                      aria-label="Flights per year"
-                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer"
+                      aria-label="Annual individual flights taken"
+                      aria-valuemin={0}
+                      aria-valuemax={15}
+                      aria-valuenow={watchValues.flightsPerYear}
+                      className="h-2 w-full appearance-none rounded-lg bg-slate-100 dark:bg-slate-800 accent-emerald-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500"
                       {...register('flightsPerYear', { valueAsNumber: true })}
                     />
                     <div className="flex justify-between text-[10px] text-slate-400 dark:text-slate-500">

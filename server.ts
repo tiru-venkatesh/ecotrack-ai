@@ -46,27 +46,55 @@ async function startServer() {
       return;
     }
 
+    // SERVER-SIDE INPUT SANITIZATION & STRICT VALIDATION (Security Improvements)
+    const safeTravelDistance = Math.max(0, Math.min(500, Number(input.travelDistance) || 0));
+    const safeTransportType = ['car', 'bike', 'bus', 'train', 'ev', 'walking'].includes(input.transportType) 
+      ? input.transportType 
+      : 'walking';
+    
+    const safeElectricityConsume = Math.max(0, Math.min(5000, Number(input.electricityConsume) || 0));
+    const safeFoodPref = ['vegetarian', 'mixed', 'meat'].includes(input.foodPref) 
+      ? input.foodPref 
+      : 'mixed';
+
+    const safeFlightsPerYear = Math.max(0, Math.min(100, Number(input.flightsPerYear) || 0));
+    const safeWaterConsume = Math.max(0, Math.min(1000, Number(input.waterConsume) || 0));
+
+    // Emissions breakdown sanitization
+    const safeEmissions = {
+      transport: Math.max(0, Number(emissions.transport) || 0),
+      electricity: Math.max(0, Number(emissions.electricity) || 0),
+      food: Math.max(0, Number(emissions.food) || 0),
+      flights: Math.max(0, Number(emissions.flights) || 0),
+      water: Math.max(0, Number(emissions.water) || 0),
+      total: Math.max(0, Number(emissions.total) || 0)
+    };
+
+    const safeSustainabilityScore = Math.max(5, Math.min(100, Number(sustainabilityScore) || 50));
+    const safeGrade = ['A', 'B', 'C', 'D', 'E'].includes(grade) ? grade : 'C';
+    const safeGradeLabel = String(gradeLabel || 'Green Path Traveler').replace(/[^\w\s-]/g, "");
+
     try {
       const gemini = getGeminiClient();
 
       const prompt = `
         You are EcoTrack AI, an elite carbon sustainability auditor.
         The user has calculated their household carbon footprint and has these statistics:
-        - Daily travel distance: ${input.travelDistance} km via ${input.transportType}
-        - Monthly electricity consumption: ${input.electricityConsume} kWh
-        - Food preference: ${input.foodPref}
-        - Flights taken per year: ${input.flightsPerYear} flights
-        - Daily water consumption: ${input.waterConsume} liters
+        - Daily travel distance: ${safeTravelDistance} km via ${safeTransportType}
+        - Monthly electricity consumption: ${safeElectricityConsume} kWh
+        - Food preference: ${safeFoodPref}
+        - Flights taken per year: ${safeFlightsPerYear} flights
+        - Daily water consumption: ${safeWaterConsume} liters
         
         This results in the following yearly CO2 emissions:
-        - Transport: ${emissions.transport} kg CO2/year
-        - Electricity: ${emissions.electricity} kg CO2/year
-        - Food: ${emissions.food} kg CO2/year
-        - Flights: ${emissions.flights} kg CO2/year
-        - Water: ${emissions.water} kg CO2/year
-        - TOTAL: ${emissions.total} kg CO2/year
-        - Sustainability Score: ${sustainabilityScore} / 100
-        - Environmental Grade: ${grade} (${gradeLabel})
+        - Transport: ${safeEmissions.transport} kg CO2/year
+        - Electricity: ${safeEmissions.electricity} kg CO2/year
+        - Food: ${safeEmissions.food} kg CO2/year
+        - Flights: ${safeEmissions.flights} kg CO2/year
+        - Water: ${safeEmissions.water} kg CO2/year
+        - TOTAL: ${safeEmissions.total} kg CO2/year
+        - Sustainability Score: ${safeSustainabilityScore} / 100
+        - Environmental Grade: ${safeGrade} (${safeGradeLabel})
 
         Generate 3-4 highly personalized, specific, and actionable climate actions to reduce this footprint, plus a positive motivational summary.
         Provide the response in the exact JSON schema requested.
@@ -116,6 +144,7 @@ async function startServer() {
     } catch (err: any) {
       console.warn("Gemini AI API was unable to process, utilizing local deterministic insights fallback.", err.message);
       // Fallback is handled cleanly on the client side with the key 'aiGenerated: false'
+      // No leakage of sensitive local configuration/key errors is returned to the browser client.
       res.json({
         aiGenerated: false,
         message: "Offline server fallback"

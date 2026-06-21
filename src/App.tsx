@@ -185,10 +185,10 @@ Sponsor global direct air sequestering channels to close remaining loops.
 
         {/* Global sticky notification with Print / Action reports triggers */}
         {records.length > 0 && (
-          <div className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between rounded-xl bg-gradient-to-tr from-emerald-500/10 to-cyan-500/10 border border-emerald-500/25 px-4 py-3 gap-3">
+          <section className="mx-auto max-w-7xl px-4 pt-4 sm:px-6 lg:px-8" aria-label="Active carbon audit notifications">
+            <div className="flex flex-col sm:flex-row items-center justify-between rounded-xl bg-gradient-to-tr from-emerald-500/10 to-cyan-500/10 border border-emerald-500/25 px-4 py-3 gap-3" role="status" aria-live="polite">
               <div className="flex items-center space-x-2 text-xs">
-                <Sparkles className="h-4.5 w-4.5 text-emerald-500" />
+                <Sparkles className="h-4.5 w-4.5 text-emerald-500" role="img" aria-hidden="true" />
                 <span className="text-slate-700 dark:text-emerald-200">
                   Carbon Audit record active. Export reports cleanly to share with community groups!
                 </span>
@@ -199,23 +199,25 @@ Sponsor global direct air sequestering channels to close remaining loops.
                 <button
                   id="btn-report-download"
                   onClick={handleDownloadReport}
-                  className="flex items-center space-x-1 border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer text-slate-700 dark:text-slate-300 transition-colors"
+                  aria-label="Download plain text carbon audit report"
+                  className="flex items-center space-x-1 border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer text-slate-700 dark:text-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-550 focus:ring-offset-2"
                 >
-                  <Download className="h-3.5 w-3.5" />
+                  <Download className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Download Audit Document</span>
                 </button>
                 {/* Native print */}
                 <button
                   id="btn-report-print"
                   onClick={() => window.print()}
-                  className="flex items-center space-x-1 border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer text-slate-700 dark:text-slate-300 transition-colors"
+                  aria-label="Print your carbon audit portfolio"
+                  className="flex items-center space-x-1 border border-slate-200 bg-white hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 rounded-lg px-3 py-1.5 text-xs font-semibold cursor-pointer text-slate-700 dark:text-slate-300 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-550 focus:ring-offset-2"
                 >
-                  <Printer className="h-3.5 w-3.5" />
+                  <Printer className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Print Portfolio</span>
                 </button>
               </div>
             </div>
-          </div>
+          </section>
         )}
 
         {/* Tab Routing System */}

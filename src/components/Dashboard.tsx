@@ -201,10 +201,18 @@ export default function Dashboard({
         </div>
 
         {/* Sustainability Score Gauge Card */}
-        <div className="relative overflow-hidden rounded-3xl border border-emerald-50 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-emerald-900/30 dark:bg-slate-900 flex flex-col items-center justify-center">
+        <div 
+          className="relative overflow-hidden rounded-3xl border border-emerald-50 bg-white p-6 shadow-sm transition-all hover:shadow-md dark:border-emerald-900/30 dark:bg-slate-900 flex flex-col items-center justify-center"
+          role="region"
+          aria-label="Sustainability score summary"
+        >
           <div className="relative flex items-center justify-center">
             {/* SVG Circle indicator */}
-            <svg className="h-28 w-28 transform -rotate-90">
+            <svg 
+              className="h-28 w-28 transform -rotate-90"
+              role="img"
+              aria-label={`Sustainability score progress bar showing ${score} out of 100`}
+            >
               <circle
                 cx="56"
                 cy="56"
@@ -318,8 +326,9 @@ export default function Dashboard({
                     >
                       <button
                         onClick={() => toggleRecommendationComplete(rec.id)}
-                        className={`flex-shrink-0 mt-0.5 cursor-pointer text-slate-400 hover:text-emerald-500 ${isChecked ? 'text-emerald-500' : ''}`}
+                        className={`flex-shrink-0 mt-0.5 cursor-pointer text-slate-400 hover:text-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 rounded ${isChecked ? 'text-emerald-500' : ''}`}
                         aria-label={`Mark advice "${rec.title}" as complete`}
+                        aria-pressed={isChecked}
                       >
                         {isChecked ? (
                           <CheckCircle2 className="h-5 w-5 text-emerald-550 fill-emerald-500/10" />

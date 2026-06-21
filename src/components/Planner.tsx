@@ -282,11 +282,13 @@ export default function Planner({
               Actions taken across calculator forms, goal blueprint consoles, and offset simulators unlock rare glowing certificates.
             </p>
 
-            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3">
+            <div className="grid grid-cols-2 gap-3.5 sm:grid-cols-3" role="list" aria-label="Unlocked environmental badges">
               {badges.map((b) => (
                 <div
                   key={b.id}
                   id={`badge-card-${b.id}`}
+                  role="listitem"
+                  aria-label={`Badge: ${b.title}, Description: ${b.description}. Status: ${b.unlocked ? 'Unlocked' : 'Locked'}`}
                   className={`flex flex-col items-center justify-center p-4 rounded-xl border text-center transition-all ${
                     b.unlocked
                       ? 'border-emerald-500/30 bg-gradient-to-tr from-emerald-50/10 to-emerald-100/5 shadow-md dark:border-emerald-500/10 dark:from-emerald-950/20 dark:to-emerald-900/10'
@@ -297,7 +299,7 @@ export default function Planner({
                     b.unlocked 
                       ? 'from-emerald-400 to-cyan-555 text-white shadow-md shadow-emerald-500/10' 
                       : 'from-slate-100 to-slate-200 text-slate-400 dark:from-slate-800 dark:to-slate-700'
-                  }`}>
+                  }`} aria-hidden="true">
                     {/* Simplified dynamic Icon lookup */}
                     <Award className="h-5.5 w-5.5" />
                   </div>
@@ -343,19 +345,21 @@ export default function Planner({
                     </div>
 
                     {/* Quantity selectors */}
-                    <div className="flex items-center space-x-2.5">
+                    <div className="flex items-center space-x-2.5" role="group" aria-label={`Sponsorship quantity for ${proj.title}`}>
                       <button
                         onClick={() => updateBasket(proj.id, -1)}
-                        className="h-6 w-6 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs"
+                        aria-label={`Decrease ${proj.title} quantity`}
+                        className="h-6 w-6 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                       >
                         -
                       </button>
-                      <span className="font-mono text-xs font-bold text-slate-800 dark:text-white w-4 text-center">
+                      <span className="font-mono text-xs font-bold text-slate-800 dark:text-white w-4 text-center" aria-live="polite">
                         {quantity}
                       </span>
                       <button
                         onClick={() => updateBasket(proj.id, 1)}
-                        className="h-6 w-6 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs"
+                        aria-label={`Increase ${proj.title} quantity`}
+                        className="h-6 w-6 rounded border border-slate-200 dark:border-slate-700 hover:bg-slate-50 text-slate-600 dark:text-slate-300 flex items-center justify-center font-bold text-xs focus:outline-none focus:ring-2 focus:ring-emerald-500 cursor-pointer"
                       >
                         +
                       </button>
