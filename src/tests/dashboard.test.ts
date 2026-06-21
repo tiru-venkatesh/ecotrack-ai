@@ -77,4 +77,42 @@ describe('Deterministic AI Recommendations Engine', () => {
     expect(rainRec).toBeDefined();
     expect(rainRec?.priority).toBe('low');
   });
+
+  it('should trigger intermediate suggestions for EV, mixed diet, regional flight, and bus commuter', () => {
+    const input: EcoDataInput = {
+      travelDistance: 40,
+      transportType: 'ev',
+      electricityConsume: 200,
+      foodPref: 'mixed',
+      flightsPerYear: 3,
+      waterConsume: 100
+    };
+
+    const emissions = calculateEmissions(input);
+    const recommendations = getDeterministicRecommendations(input, emissions);
+
+    // EV should trigger solar charging optimization
+    const evRec = recommendations.find(r => r.id === 'rec_transport_ev');
+    expect(evRec).toBeDefined();
+
+    // Mixed food preferences should trigger plant-based margins
+    const mixedFood = recommendations.find(r => r.id === 'rec_food_mixed');
+    expect(mixedFood).toBeDefined();
+
+    // Flight count of 3 should trigger gold-standard offsets suggestions
+    const flightOffset = recommendations.find(r => r.id === 'rec_flight_offset');
+    expect(flightOffset).toBeDefined();
+
+    // Now test a public bus commuter
+    const busInput: EcoDataInput = {
+      ...input,
+      transportType: 'bus'
+    };
+    const busEmissions = calculateEmissions(busInput);
+    const busRecommendations = getDeterministicRecommendations(busInput, busEmissions);
+
+    // Bus commuter should trigger active transition suggestion
+    const activeCommRec = busRecommendations.find(r => r.id === 'rec_transport_active');
+    expect(activeCommRec).toBeDefined();
+  });
 });

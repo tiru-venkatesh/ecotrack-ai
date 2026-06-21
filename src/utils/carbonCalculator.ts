@@ -20,6 +20,12 @@ export const EMISSION_FACTORS = {
   water: 0.002     // kg CO2 per liter (composite pumping + partial electric heating)
 };
 
+/**
+ * Calculates raw annual CO2 emissions in kg from individual ecological consumption metrics.
+ * 
+ * @param input - The individual's daily travel, utility, diet, flight, and water inputs.
+ * @returns A structured yearly CO2 emissions breakdown for all categories in kg CO2/year.
+ */
 export function calculateEmissions(input: EcoDataInput): EmissionsBreakdown {
   const transportFactor = EMISSION_FACTORS.transport[input.transportType];
   const yearlyTransport = input.travelDistance * 365 * transportFactor;
@@ -44,6 +50,13 @@ export function calculateEmissions(input: EcoDataInput): EmissionsBreakdown {
   };
 }
 
+/**
+ * Converts annual emissions into a sustainability score from 5 to 100.
+ * A score of 100 indicates total alignment with the global 2,000 kg baseline.
+ * 
+ * @param totalEmissions - Combined yearly CO2 output in kg.
+ * @returns An ecological sustainability score between 5 and 100.
+ */
 export function calculateSustainabilityScore(totalEmissions: number): number {
   // Global sustainable baseline ~ 2000 kg CO2/year. High emitter ~ 15000 kg CO2/year.
   // Formula shapes a score from 0 to 100
@@ -51,6 +64,12 @@ export function calculateSustainabilityScore(totalEmissions: number): number {
   return Math.max(5, Math.min(100, Math.round(score)));
 }
 
+/**
+ * Resolves an environmental letter grade from 'A' to 'E' based on the sustainability score.
+ * 
+ * @param score - Sustainability score (5 to 100).
+ * @returns An environmental tier classification letter.
+ */
 export function getEnvironmentalGrade(score: number): 'A' | 'B' | 'C' | 'D' | 'E' {
   if (score >= 85) return 'A';
   if (score >= 70) return 'B';
@@ -59,6 +78,12 @@ export function getEnvironmentalGrade(score: number): 'A' | 'B' | 'C' | 'D' | 'E
   return 'E';
 }
 
+/**
+ * Provides a descriptive literal label matching the given environmental grade tier.
+ * 
+ * @param grade - Environmental grade tier 'A' through 'E'.
+ * @returns A title describing the category of consumer.
+ */
 export function getGradeLabel(grade: 'A' | 'B' | 'C' | 'D' | 'E'): string {
   const labels = {
     A: 'Climate Champion',
@@ -70,6 +95,14 @@ export function getGradeLabel(grade: 'A' | 'B' | 'C' | 'D' | 'E'): string {
   return labels[grade];
 }
 
+/**
+ * Generates local deterministic fallback action cards corresponding to the user's footprint profiles.
+ * Runs instantly when the server or Gemini network is offline, bypassing lag or errors.
+ * 
+ * @param input - The original ecological input.
+ * @param emissions - The calculated emissions breakdown.
+ * @returns An array of prioritized, categorised fallback recommendations.
+ */
 export function getDeterministicRecommendations(input: EcoDataInput, emissions: EmissionsBreakdown): AIInsight[] {
   const recommendations: AIInsight[] = [];
 

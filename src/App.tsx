@@ -172,6 +172,12 @@ Sponsor global direct air sequestering channels to close remaining loops.
 
   return (
     <div className="min-h-screen bg-[#f8faf9] text-slate-800 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 flex flex-col justify-between">
+      <a 
+        href="#main-content" 
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-xl focus:bg-emerald-500 focus:px-4 focus:py-2.5 focus:text-sm focus:font-bold focus:text-white focus:shadow-lg focus:shadow-emerald-500/20 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500"
+      >
+        Skip to main content
+      </a>
       
       <div>
         {/* Core navbar */}
@@ -221,7 +227,7 @@ Sponsor global direct air sequestering channels to close remaining loops.
         )}
 
         {/* Tab Routing System */}
-        <main className="flex-grow">
+        <main id="main-content" className="flex-grow">
           {currentTab === 'dashboard' && (
             <Dashboard
               records={records}
